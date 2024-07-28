@@ -22,6 +22,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             height: 500px;
             overflow-y: auto;
+            position: relative;
         }
         .message {
             text-align: left;
@@ -29,9 +30,14 @@
         }
         .user {
             color: #007bff;
+            font-weight: bold;
         }
         .bot {
             color: #333;
+        }
+        #typing {
+            font-style: italic;
+            color: #888;
         }
     </style>
 </head>
@@ -39,6 +45,7 @@
     <h1>Simulação de Atendimento Virtual</h1>
     <div id="chatbox">
         <div id="chat"></div>
+        <div id="typing"></div>
     </div>
 
     <script>
@@ -55,6 +62,7 @@
 
         function simulateConversation() {
             const chat = document.getElementById('chat');
+            const typing = document.getElementById('typing');
             let index = 0;
 
             function displayNextMessage() {
@@ -66,6 +74,11 @@
                     chat.appendChild(messageDiv);
                     chat.scrollTop = chat.scrollHeight;
                     index++;
+                    
+                    // Simula digitação
+                    typing.textContent = "Digitando...";
+                    setTimeout(() => typing.textContent = "", 1000); // Remove "Digitando..." após 1 segundo
+
                     setTimeout(displayNextMessage, 3000); // Exibe a próxima mensagem após 3 segundos
                 }
             }
@@ -77,5 +90,3 @@
     </script>
 </body>
 </html>
-
-
