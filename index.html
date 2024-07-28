@@ -62,12 +62,16 @@
     </div>
 
     <script>
-        const responses = {
-            '1': "Ótimo! Para agendar uma consulta, por favor, informe: Nome completo, Data e horário desejado, Especialidade desejada.",
-            '2': "Por favor, informe seu código de exame para que possamos verificar os resultados.",
-            '3': "Aqui estão algumas informações úteis: Endereço: Rua Exemplo, 123. Horário de funcionamento: Seg-Sex, 9h-18h. Telefone: (11) 1234-5678.",
-            'default': "Escolha inválida. Por favor, digite 1 para Agendar Consulta, 2 para Verificar Exames ou 3 para Informações Gerais."
-        };
+        const interactions = [
+            { user: "1", bot: "Ótimo! Para agendar uma consulta, por favor, informe: Nome completo, Data e horário desejado, Especialidade desejada." },
+            { user: "nome: João Silva, data e horário: 20/08/2024 às 10:00, especialidade: Cardiologia", bot: "Recebemos sua solicitação para uma consulta com a Dra. Maria Oliveira em Cardiologia no dia 20/08/2024 às 10:00. Confirmamos a consulta para este horário." },
+            { user: "2", bot: "Por favor, informe seu código de exame para que possamos verificar os resultados." },
+            { user: "EX789123", bot: "Seu exame com código EX789123 está disponível. Os resultados estão normais. Se precisar de mais detalhes, entre em contato com nosso atendimento ou acesse a área de resultados de exames em nosso site." },
+            { user: "3", bot: "Aqui estão algumas informações úteis: Endereço: Rua Exemplo, 123. Horário de funcionamento: Seg-Sex, 9h-18h. Telefone: (11) 1234-5678." },
+            { user: "Gostei, obrigado!", bot: "Obrigado por entrar em contato com a Clínica XYZ! Se precisar de mais assistência, estamos aqui para ajudar. Tenha um ótimo dia!" }
+        ];
+
+        let interactionIndex = 0;
 
         function simulateTyping(text, callback) {
             const chat = document.getElementById('chat');
@@ -90,16 +94,14 @@
         function processInput() {
             const userInput = document.getElementById('userInput').value.trim();
             const chat = document.getElementById('chat');
+            const interaction = interactions[interactionIndex];
             let response = '';
 
-            if (userInput === '1') {
-                response = responses['1'];
-            } else if (userInput === '2') {
-                response = responses['2'];
-            } else if (userInput === '3') {
-                response = responses['3'];
+            if (userInput.toLowerCase().includes(interaction.user.toLowerCase())) {
+                response = interaction.bot;
+                interactionIndex++;
             } else {
-                response = responses['default'];
+                response = "Desculpe, não entendi sua mensagem. Por favor, escolha uma opção válida.";
             }
 
             chat.innerHTML += `<div class="message user">Você: ${userInput}</div>`;
@@ -110,6 +112,12 @@
                 chat.innerHTML += `<div class="message bot">${response}</div>`;
                 chat.scrollTop = chat.scrollHeight;
             });
+
+            if (interactionIndex >= interactions.length) {
+                chat.innerHTML += '<div class="message bot">Obrigado por usar o atendimento virtual. Se precisar de mais assistência, estamos à disposição!</div>';
+                document.getElementById('userInput').style.display = 'none';
+                document.querySelector('button').style.display = 'none';
+            }
         }
 
         // Simula o início da conversa após 1 segundo
@@ -119,3 +127,4 @@
     </script>
 </body>
 </html>
+
