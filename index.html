@@ -26,49 +26,48 @@
         }
         .message {
             text-align: left;
-            margin-bottom: 10px;
-        }
-        .user {
-            color: #007bff;
-            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
         }
         .bot {
+            background-color: #d4edda;
             color: #333;
         }
-        .message p {
-            margin: 0;
+        .user {
+            background-color: #cce5ff;
+            color: #007bff;
+        }
+        #intro {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
         #typing {
             font-style: italic;
             color: #888;
-        }
-        .intro {
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h1>Simulação de Atendimento Virtual</h1>
     <div id="chatbox">
-        <div id="intro" class="intro"></div>
+        <div id="intro"></div>
         <div id="chat"></div>
         <div id="typing"></div>
     </div>
 
     <script>
-        const introText = "Nesta simulação, você verá como funciona o atendimento virtual da Clínica XYZ. O sistema começará com uma breve introdução e em seguida simulará a interação completa com um cliente. A conversa será automatizada para mostrar o fluxo de atendimento, desde o agendamento de consultas até a verificação de exames e fornecimento de informações gerais.";
-        
+        const introText = "Nesta simulação, você verá como funciona o atendimento virtual da Clínica XYZ. O sistema começará com uma breve introdução e, em seguida, simulará a interação completa com um cliente. A conversa será automatizada para mostrar o fluxo de atendimento, desde o agendamento de consultas até a verificação de exames e fornecimento de informações gerais.";
+
         const messages = [
             { sender: "bot", text: "Olá! Bem-vindo ao atendimento virtual da Clínica XYZ. Como posso ajudá-lo hoje?" },
             { sender: "bot", text: "1. Agendar Consulta\n2. Verificar Exames\n3. Informações Gerais" },
-            { sender: "bot", text: "Você escolheu: Agendar Consulta\nÓtimo! Para agendar uma consulta, por favor, informe: Nome completo, Data e horário desejado, Especialidade desejada." },
+            { sender: "user", text: "Você escolheu: Agendar Consulta\nÓtimo!\nPara agendar uma consulta, por favor, informe:\nNome completo,\nData e horário desejado,\nEspecialidade desejada." },
             { sender: "bot", text: "Recebemos sua solicitação para uma consulta com a Dra. Maria Oliveira em Cardiologia no dia 20/08/2024 às 10:00. Confirmamos a consulta para este horário." },
-            { sender: "bot", text: "Você escolheu: Verificar Exames\nPor favor, informe seu código de exame para que possamos verificar os resultados." },
-            { sender: "bot", text: "Seu exame com código EX789123 está disponível. Os resultados estão normais. Se precisar de mais detalhes, entre em contato com nosso atendimento ou acesse a área de resultados de exames em nosso site." },
-            { sender: "bot", text: "Você escolheu: Informações Gerais\nAqui estão algumas informações úteis:\nEndereço: Rua Exemplo, 123\nHorário de funcionamento: Seg-Sex, 9h-18h\nTelefone: (11) 1234-5678" },
-            { sender: "bot", text: "Obrigado por entrar em contato com a Clínica XYZ! Se precisar de mais assistência, estamos aqui para ajudar. Tenha um ótimo dia!" }
+            { sender: "user", text: "Você escolheu: Verificar Exames\nPor favor, informe seu código de exame para que possamos verificar:" },
+            { sender: "user", text: "EX789123" },
+            { sender: "bot", text: "Seu exame com código EX789123 está disponível.\nSe precisar de mais detalhes, entre em contato com nosso atendimento ou acesse a área de resultados de exames em nosso site." }
         ];
 
         function simulateConversation() {
@@ -84,7 +83,7 @@
                     const message = messages[index];
                     const messageDiv = document.createElement('div');
                     messageDiv.className = `message ${message.sender}`;
-                    messageDiv.innerHTML = `<p><strong>${message.sender === 'bot' ? 'Sistema' : 'Cliente'}:</strong> ${message.text}</p>`;
+                    messageDiv.innerHTML = `<p>${message.text}</p>`;
                     chat.appendChild(messageDiv);
                     chat.scrollTop = chat.scrollHeight;
                     index++;
@@ -104,4 +103,3 @@
     </script>
 </body>
 </html>
-
