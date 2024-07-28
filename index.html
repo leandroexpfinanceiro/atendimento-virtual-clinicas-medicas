@@ -33,98 +33,49 @@
         .bot {
             color: #333;
         }
-        #userInput {
-            width: calc(100% - 100px);
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
     <h1>Simulação de Atendimento Virtual</h1>
     <div id="chatbox">
         <div id="chat"></div>
-        <input type="text" id="userInput" placeholder="Digite sua escolha..." autofocus>
-        <button onclick="processInput()">Enviar</button>
     </div>
 
     <script>
-        const interactions = [
-            { user: "1", bot: "Ótimo! Para agendar uma consulta, por favor, informe: Nome completo, Data e horário desejado, Especialidade desejada." },
-            { user: "nome: João Silva, data e horário: 20/08/2024 às 10:00, especialidade: Cardiologia", bot: "Recebemos sua solicitação para uma consulta com a Dra. Maria Oliveira em Cardiologia no dia 20/08/2024 às 10:00. Confirmamos a consulta para este horário." },
-            { user: "2", bot: "Por favor, informe seu código de exame para que possamos verificar os resultados." },
-            { user: "EX789123", bot: "Seu exame com código EX789123 está disponível. Os resultados estão normais. Se precisar de mais detalhes, entre em contato com nosso atendimento ou acesse a área de resultados de exames em nosso site." },
-            { user: "3", bot: "Aqui estão algumas informações úteis: Endereço: Rua Exemplo, 123. Horário de funcionamento: Seg-Sex, 9h-18h. Telefone: (11) 1234-5678." },
-            { user: "Gostei, obrigado!", bot: "Obrigado por entrar em contato com a Clínica XYZ! Se precisar de mais assistência, estamos aqui para ajudar. Tenha um ótimo dia!" }
+        const messages = [
+            { sender: "bot", text: "Olá! Bem-vindo ao atendimento virtual da Clínica XYZ. Como posso ajudá-lo hoje?" },
+            { sender: "bot", text: "1. Agendar Consulta\n2. Verificar Exames\n3. Informações Gerais" },
+            { sender: "bot", text: "Você escolheu: Agendar Consulta\nÓtimo! Para agendar uma consulta, por favor, informe: Nome completo, Data e horário desejado, Especialidade desejada." },
+            { sender: "bot", text: "Recebemos sua solicitação para uma consulta com a Dra. Maria Oliveira em Cardiologia no dia 20/08/2024 às 10:00. Confirmamos a consulta para este horário." },
+            { sender: "bot", text: "Você escolheu: Verificar Exames\nPor favor, informe seu código de exame para que possamos verificar os resultados." },
+            { sender: "bot", text: "Seu exame com código EX789123 está disponível. Os resultados estão normais. Se precisar de mais detalhes, entre em contato com nosso atendimento ou acesse a área de resultados de exames em nosso site." },
+            { sender: "bot", text: "Você escolheu: Informações Gerais\nAqui estão algumas informações úteis:\nEndereço: Rua Exemplo, 123\nHorário de funcionamento: Seg-Sex, 9h-18h\nTelefone: (11) 1234-5678" },
+            { sender: "bot", text: "Obrigado por entrar em contato com a Clínica XYZ! Se precisar de mais assistência, estamos aqui para ajudar. Tenha um ótimo dia!" }
         ];
 
-        let interactionIndex = 0;
-
-        function simulateTyping(text, callback) {
+        function simulateConversation() {
             const chat = document.getElementById('chat');
             let index = 0;
-            chat.innerHTML += '<div class="message bot">...</div>';
-            const message = chat.lastChild;
-            
-            function type() {
-                if (index < text.length) {
-                    message.textContent += text[index++];
-                    setTimeout(type, 50);
-                } else {
-                    callback();
+
+            function displayNextMessage() {
+                if (index < messages.length) {
+                    const message = messages[index];
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${message.sender}`;
+                    messageDiv.textContent = message.text;
+                    chat.appendChild(messageDiv);
+                    chat.scrollTop = chat.scrollHeight;
+                    index++;
+                    setTimeout(displayNextMessage, 3000); // Exibe a próxima mensagem após 3 segundos
                 }
             }
 
-            type();
+            displayNextMessage();
         }
 
-        function processInput() {
-            const userInput = document.getElementById('userInput').value.trim();
-            const chat = document.getElementById('chat');
-            const interaction = interactions[interactionIndex];
-            let response = '';
-
-            if (userInput.toLowerCase().includes(interaction.user.toLowerCase())) {
-                response = interaction.bot;
-                interactionIndex++;
-            } else {
-                response = "Desculpe, não entendi sua mensagem. Por favor, escolha uma opção válida.";
-            }
-
-            chat.innerHTML += `<div class="message user">Você: ${userInput}</div>`;
-            document.getElementById('userInput').value = '';
-            chat.scrollTop = chat.scrollHeight;
-
-            simulateTyping(response, () => {
-                chat.innerHTML += `<div class="message bot">${response}</div>`;
-                chat.scrollTop = chat.scrollHeight;
-            });
-
-            if (interactionIndex >= interactions.length) {
-                chat.innerHTML += '<div class="message bot">Obrigado por usar o atendimento virtual. Se precisar de mais assistência, estamos à disposição!</div>';
-                document.getElementById('userInput').style.display = 'none';
-                document.querySelector('button').style.display = 'none';
-            }
-        }
-
-        // Simula o início da conversa após 1 segundo
-        setTimeout(() => {
-            simulateTyping('Olá! Bem-vindo ao atendimento virtual da Clínica XYZ. Como posso ajudá-lo hoje?\n\n1. Agendar Consulta\n2. Verificar Exames\n3. Informações Gerais', () => {});
-        }, 1000);
+        window.onload = simulateConversation;
     </script>
 </body>
 </html>
+
 
