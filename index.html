@@ -35,20 +35,31 @@
         .bot {
             color: #333;
         }
+        .message p {
+            margin: 0;
+        }
         #typing {
             font-style: italic;
             color: #888;
+        }
+        .intro {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h1>Simulação de Atendimento Virtual</h1>
     <div id="chatbox">
+        <div id="intro" class="intro"></div>
         <div id="chat"></div>
         <div id="typing"></div>
     </div>
 
     <script>
+        const introText = "Nesta simulação, você verá como funciona o atendimento virtual da Clínica XYZ. O sistema começará com uma breve introdução e em seguida simulará a interação completa com um cliente. A conversa será automatizada para mostrar o fluxo de atendimento, desde o agendamento de consultas até a verificação de exames e fornecimento de informações gerais.";
+        
         const messages = [
             { sender: "bot", text: "Olá! Bem-vindo ao atendimento virtual da Clínica XYZ. Como posso ajudá-lo hoje?" },
             { sender: "bot", text: "1. Agendar Consulta\n2. Verificar Exames\n3. Informações Gerais" },
@@ -63,14 +74,17 @@
         function simulateConversation() {
             const chat = document.getElementById('chat');
             const typing = document.getElementById('typing');
+            const intro = document.getElementById('intro');
             let index = 0;
+
+            intro.textContent = introText;
 
             function displayNextMessage() {
                 if (index < messages.length) {
                     const message = messages[index];
                     const messageDiv = document.createElement('div');
                     messageDiv.className = `message ${message.sender}`;
-                    messageDiv.textContent = message.text;
+                    messageDiv.innerHTML = `<p><strong>${message.sender === 'bot' ? 'Sistema' : 'Cliente'}:</strong> ${message.text}</p>`;
                     chat.appendChild(messageDiv);
                     chat.scrollTop = chat.scrollHeight;
                     index++;
@@ -83,10 +97,11 @@
                 }
             }
 
-            displayNextMessage();
+            setTimeout(displayNextMessage, 2000); // Inicia a simulação após 2 segundos
         }
 
         window.onload = simulateConversation;
     </script>
 </body>
 </html>
+
